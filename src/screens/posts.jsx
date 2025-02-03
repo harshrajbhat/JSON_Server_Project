@@ -18,7 +18,7 @@ const Posts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [paginatedPosts, setPaginatedPosts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // Search query state
+  const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const Posts = () => {
       post.title.toLowerCase().includes(query)
     );
     setFilteredPosts(filtered);
-    setCurrentPage(1); // Reset to the first page when searching
+    setCurrentPage(1); 
   };
 
   const PostCard = ({ post }) => {

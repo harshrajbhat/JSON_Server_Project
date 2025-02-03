@@ -20,12 +20,10 @@ const TopCommentedPosts = () => {
     return <p style={{ textAlign: "center", color: "#666" }}>No posts found.</p>;
   }
 
-  // Filter posts by the selected author
   const filteredPosts = data.posts.filter(
     (post) => Number(post.authorId) === Number(authorId)
   );
 
-  // Get top 5 most commented posts
   const topCommentedPosts = filteredPosts
     .sort((a, b) => b.numComments - a.numComments)
     .slice(0, 5);

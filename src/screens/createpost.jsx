@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Container, Grid, Card, CardContent } from "@mui/material";
-import AddBoxIcon from "@mui/icons-material/AddBox"; // Icon for Create Post
+import AddBoxIcon from "@mui/icons-material/AddBox"; 
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -20,8 +20,8 @@ const CreatePost = () => {
     const newPost = {
       title,
       description,
-      authorId: parseInt(authorId), // Assuming authorId should be an integer
-      datePublished: new Date().toISOString(), // Adding the current date as published date
+      authorId: parseInt(authorId), 
+      datePublished: new Date().toISOString(), 
       numLikes: 0,
       numComments: 0,
     };
