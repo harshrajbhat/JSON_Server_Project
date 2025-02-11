@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useParams } from "react-router-dom";
 import { Grid, Card, CardContent, Typography, Button } from "@mui/material";
 import useFetch from "../components/fetchdata";
 
 const AuthorPost = () => {
+  const { authorId } = useParams(); 
   const location = useLocation();
-  const { authorId, authorName } = location.state || {};
+  const { authorName } = location.state || {}; 
   const { data, error, loading } = useFetch("/db.json");
 
   if (loading) {
@@ -20,12 +21,13 @@ const AuthorPost = () => {
     return <p style={{ textAlign: "center", color: "#666" }}>No posts found.</p>;
   }
 
-  // Filter selected author
+  const author = data.authors?.find((a) => String(a.id) === String(authorId));
+  const displayAuthorName = authorName || author?.name || "Author";
+
   const filteredPosts = data.posts.filter(
     (post) => Number(post.authorId) === Number(authorId)
   );
 
-  // Sort top 5 most liked posts
   const topLikedPosts = filteredPosts
     .sort((a, b) => b.numLikes - a.numLikes)
     .slice(0, 5);
@@ -33,9 +35,10 @@ const AuthorPost = () => {
   return (
     <div style={{ padding: "20px", backgroundColor: "#e3f2fd", minHeight: "100vh" }}>
       <Typography variant="h4" sx={{ textAlign: "center", marginBottom: "20px" }}>
-        Top 5 Most Liked Posts by {authorName || "Author"}
+        Top 5 Most Liked Posts by {displayAuthorName}
       </Typography>
-      <Link to="/authorposts/comments" state={{ authorId, authorName }}>
+
+      <Link to={`/authorposts/comments/${authorId}`} state={{ authorId, authorName: displayAuthorName }}>
         <Button
           variant="contained"
           color="primary"
@@ -44,6 +47,7 @@ const AuthorPost = () => {
           View Top Commented Posts
         </Button>
       </Link>
+
       {topLikedPosts.length > 0 ? (
         <Grid container spacing={3} justifyContent="center">
           {topLikedPosts.map((post) => (
@@ -51,10 +55,7 @@ const AuthorPost = () => {
           ))}
         </Grid>
       ) : (
-        <Typography
-          variant="body1"
-          sx={{ textAlign: "center", color: "#666", marginTop: "20px" }}
-        >
+        <Typography variant="body1" sx={{ textAlign: "center", color: "#666", marginTop: "20px" }}>
           No posts available for this author.
         </Typography>
       )}
@@ -64,10 +65,6 @@ const AuthorPost = () => {
 
 const PostCard = ({ post }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
-
-  const handleToggleDescription = () => {
-    setShowFullDescription((prev) => !prev);
-  };
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -86,19 +83,14 @@ const PostCard = ({ post }) => {
           <Typography variant="h6" sx={{ marginBottom: "10px" }}>
             {post.title}
           </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            paragraph
-            sx={{ textAlign: "left" }}
-          >
+          <Typography variant="body2" color="text.secondary" paragraph sx={{ textAlign: "left" }}>
             {showFullDescription
               ? post.description
               : `${post.description.slice(0, 100)}${post.description.length > 100 ? "..." : ""}`}
           </Typography>
           <Button
             size="small"
-            onClick={handleToggleDescription}
+            onClick={() => setShowFullDescription((prev) => !prev)}
             variant="contained"
             sx={{ marginBottom: "10px", backgroundColor: "#1976d2" }}
           >

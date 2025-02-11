@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useParams } from "react-router-dom";
 import { Grid, Card, CardContent, Typography, Button } from "@mui/material";
 import useFetch from "../components/fetchdata";
 
 const TopCommentedPosts = () => {
   const location = useLocation();
-  const { authorId, authorName } = location.state || {};
+  const {authorId} = useParams()
+  const { authorName } = location.state || {};
   const { data, error, loading } = useFetch("/db.json");
 
   if (loading) {
@@ -33,7 +34,7 @@ const TopCommentedPosts = () => {
       <Typography variant="h4" sx={{ textAlign: "center", marginBottom: "20px" }}>
         Top 5 Most Commented Posts by {authorName || "Author"}
       </Typography>
-      <Link to="/authorposts" state={{ authorId, authorName }}>
+      <Link to={`/authorposts/${authorId}`} state={{ authorId, authorName }}>
         <Button
           variant="contained"
           color="primary"

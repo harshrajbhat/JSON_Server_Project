@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useParams } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import Authors from "./screens/authors";
@@ -14,6 +14,7 @@ import CreateAuthor from "./screens/createauthor";
 import EditPost from "./screens/editpost";
 
 const App = () => {
+  const {authorId} = useParams()
   return (
     <Router>
       <Navbar />
@@ -23,8 +24,8 @@ const App = () => {
         <Route path="/viewpostdetails" element={<ViewPostDetails />} />
         <Route path="/authors" element={<Authors />} />
         <Route path="/users" element={<Users />} />
-        <Route path="/authorposts" element={<AuthorPost />} />
-        <Route path="/authorposts/comments" element={<TopCommentedPosts />} />
+        <Route path="/authorposts/:authorId" element={<AuthorPost />} />
+        <Route path="/authorposts/comments/:authorId" element={<TopCommentedPosts />} />
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="/createauthor" element={<CreateAuthor />} />
         <Route path="/editpost" element={<EditPost />} />
